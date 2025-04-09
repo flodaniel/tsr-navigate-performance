@@ -1,10 +1,17 @@
-import * as React from 'react'
-import { Link, Outlet, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import * as React from "react";
+import { Link, Outlet, createRootRoute } from "@tanstack/react-router";
+import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { generateRandomObject } from "../utils/randomObject";
 
 export const Route = createRootRoute({
   component: RootComponent,
-})
+  beforeLoad: async () => {
+    console.log("beforeLoad");
+    return {
+      stuffInContext: generateRandomObject(),
+    };
+  },
+});
 
 function RootComponent() {
   return (
@@ -13,16 +20,17 @@ function RootComponent() {
         <Link
           to="/"
           activeProps={{
-            className: 'font-bold',
+            className: "font-bold",
           }}
           activeOptions={{ exact: true }}
         >
           Home
-        </Link>{' '}
+        </Link>{" "}
         <Link
           to="/about"
+          search={{ s: "" }}
           activeProps={{
-            className: 'font-bold',
+            className: "font-bold",
           }}
         >
           About
@@ -32,5 +40,5 @@ function RootComponent() {
       <Outlet />
       <TanStackRouterDevtools position="bottom-right" />
     </>
-  )
+  );
 }
